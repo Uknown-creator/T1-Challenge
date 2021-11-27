@@ -5,8 +5,12 @@ cursorObj = con.cursor()
 
 
 class Database:
+    def get_tests():
+        cursorObj.execute("SELECT * FROM test")
+        return cursorObj.fetchall()
+
     def if_exist_photo(photo):
-        check = cursorObj.execute("SELECT * FROM users WHERE photo_path=?", (photo, ))
+        check = cursorObj.execute("SELECT * FROM users WHERE photo_path=?", (photo,))
         z = check.fetchall()
         print(z)
         if len(z) == 0:
@@ -14,10 +18,20 @@ class Database:
         else:
             return "True"
 
-    def add_user(entities):
-        cursorObj.execute(f"INSERT INTO users VALUES(?, ?, ?, ?, ?)", entities)
+    def get_score_by_test(id):
+        cursorObj.execute(f"SELECT * FROM test WHERE id={id}")
+        res = cursorObj.fetchall()
+        return res
 
-        # nickname, id, photo_path, admin, psychotype
+    def get_score_by_goods(id):
+        cursorObj.execute(f"SELECT * FROM goods WHERE id={id}")
+        res = cursorObj.fetchall()
+        return res
+
+    def add_user(entities):
+        cursorObj.execute(f"INSERT INTO users VALUES(?, ?, ?, ?, ?, ?, ?)", entities)
+
+        # nickname, id, photo_path, admin, psychotype, test, goods
 
         con.commit()
 
@@ -28,6 +42,11 @@ class Database:
     def Admin(id, isAdmin):
         cursorObj.execute(f"UPDATE users SET admin = '{isAdmin}' WHERE id = {id}")
         con.commit()
+
+    def get_datas_by_photo(photo):
+        cursorObj.execute(f"SELECT * FROM users WHERE photo_path = '{photo}'")
+        res = cursorObj.fetchall()
+        return (res)
 
     def delete_user(id):
         cursorObj.execute(f"DELETE FROM users WHERE id = '{id}'")
