@@ -12,7 +12,8 @@ import random
 #
 # if __name__ == "__main__":
 #     app.run()
-datas = ("Kuskov", "Maxim", "Alexandrovich", random.randint(1, 96))
-photo = ("C:/users/sfsdi/sjs", 91)
+photo = "C:/users/sfsdi/sjs"
 
-Database.delete_photo("NULL", 91)
+datas = ("Забор Артёмщиков", random.randint(1, 99), 0.7, "C:/porn/artem/gay.png")
+
+Database.add_goods_score("null", 80, -0.5)
