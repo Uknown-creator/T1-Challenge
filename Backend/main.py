@@ -1,7 +1,7 @@
 from flask import Flask, request
 from db import Database
 import random
-import json
+import jsonify
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route("/registration", methods=['GET', 'POST'])
 def registration():
     if request.method == 'POST':
-        resp = request.get_json()
+        resp = request.json
         photo = resp['photo']
         nick = resp['nick']
         check = Database.if_exist_photo(photo)
@@ -23,7 +23,7 @@ def registration():
             "Test": res[0][5],
             "Goods": res[0][6]
         }
-        return req
+        return jsonify(req)
     return '''
                 <form method="POST">
                     <div><label>Photo: <input type="text" name="photo"></label></div>
@@ -34,7 +34,7 @@ def registration():
 @app.route("/test", methods=['GET', 'POST'])
 def test():
     if request.method == "POST":
-        resp = request.get_json()
+        resp = request.json
         photo = resp['photo']
         id_test = resp['id_test']
 
@@ -64,13 +64,13 @@ def test():
         list_of_tests[6][0]:
             list_of_tests[6][2]
     }
-    return res
+    return jsonify(res)
 
 
 @app.route("/goods", methods=['GET', 'POST'])
 def goods():
     if request.method == "POST":
-        resp = request.get_json()
+        resp = request.json
         photo = resp['photo']
         id_goods = resp['id_goods']
 
@@ -80,9 +80,9 @@ def goods():
         test_score = goods_d[0][2]
         res = int(user_psycho) + int(test_score)
         Database.add_goods_score(id_goods, res)
-        return {
+        return jsonify({
             "ok": True
-        }
+        })
     list_of_photos_goods = Database.get_goods()
     res = {
         list_of_photos_goods[0][1]:
@@ -98,7 +98,7 @@ def goods():
         list_of_photos_goods[5][1]:
             list_of_photos_goods[5][3]
     }
-    return res
+    return jsonify(res)
 
 
 # @app.route("/check_photo", methods=['GET', 'POST'])
@@ -120,7 +120,7 @@ def result_goods():
         list_of_goods[5][0]:
             list_of_goods[5][2]
     }
-    return res
+    return jsonify(res)
 
 
 if __name__ == "__main__":

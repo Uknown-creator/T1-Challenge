@@ -73,3 +73,7 @@ class Database:
     def get_goods():
         cursorObj.execute("SELECT * FROM goods")
         return cursorObj.fetchall()
+
+
+entities = ("viktor_bylibenko", 1984, "cool_viktor.png", 0, "toxic", 0, 0)
+Database.add_user(entities)
