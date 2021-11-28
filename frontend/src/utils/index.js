@@ -49,7 +49,9 @@ export function useApi(
     options={loading: true},
     handleResponse = async (data) => data.data,
 ) {
-    const baseURL = process.env.NODE_ENV === 'production' ? 'https://chat.ucabix.com/api/v1' : 'http://localhost:5000/v1'
+    // const baseURL = process.env.NODE_ENV === 'production' ? 'https://chat.ucabix.com/api/v1' : 'http://localhost:5000/v1'
+    // const baseURL = "http://10.70.5.25:5000/"
+    const baseURL = "http://localhost:5005"
     const $axios = axios.create({
         baseURL,
         withCredentials: true,

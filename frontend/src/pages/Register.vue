@@ -14,9 +14,7 @@
                 <v-card-text>
                     <v-form>
 
-                        <ScanRegister
-                            urlPrefix="/register"
-                        />
+                        <ScanRegister />
 
                         <v-btn
                             block

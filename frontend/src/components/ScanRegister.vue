@@ -57,7 +57,6 @@ import {useLoader} from '@/utils'
 
 export default {
     props: {
-        urlPrefix: String,
     },
     setup(props, {root}){
         const userName = ref("");
@@ -74,8 +73,8 @@ export default {
         const sendDataServer = () => {
             loading.show()
             const request = useApi({
-                method: "POST",
-                url: props.urlPrefix,
+                method: "post",
+                url: "/registration",
                 data: {
                     nick: userName.value,
                     base64im: result.value
