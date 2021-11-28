@@ -2,7 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from db import Database
 import re
-# from ai import Face
+from ai import Face
 import random
 from flask import jsonify
 import base64
@@ -161,4 +161,4 @@ def result_goods():
 
 
 if __name__ == "__main__":
-    app.run(port=5005, debug=True)
+    app.run(host="0.0.0.0", port=5005, debug=True)
