@@ -1,11 +1,14 @@
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 from db import Database
-from ai import Face
+import re
+# from ai import Face
 import random
-import jsonify
+from flask import jsonify
 import base64
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 
 
 @app.route("/registration", methods=['POST'])
@@ -13,10 +16,13 @@ def registration():
     if request.method == 'POST':
         resp = request.get_json()
         photo = resp['base64im']
-        nom = str(random.randint(1, 9999)) + "out.jpg"
-        g = open(nom, "w")
-        g.write(base64.b64decode(photo))
-        g.close()
+        nom = str(random.randint(1, 99999)) + "out.jpg"
+
+        with open(nom, "wb") as log:
+            splitted = re.sub('data:image/.+;base64,', '', photo)
+            print(splitted)
+            image_data = base64.b64decode(splitted)
+            log.write(image_data)
 
         m = [i[2] for i in Database.get_users()]
         check = "False"
@@ -77,7 +83,7 @@ def test():
             g.close()
 
             emo = Face.emotion(nom)
-            user_psycho = (emo - 3.5)/2
+            user_psycho = (emo - 3.5) / 2
 
         res = int(user_psycho)
         Database.add_psychotype(user_d[1], res)
@@ -107,12 +113,13 @@ def goods():
         photo = resp['lisBase64im']
 
         nom = str(random.randint(1, 9999)) + "out.jpg"
-        g = open(nom, "w")
-        g.write(base64.b64decode(photo[0]))
-        g.close()
+
+        with open(nom, "wb") as log:
+            log.write(base64.b64decode(photo[0]))
 
         m = [i[2] for i in Database.get_users()]
         user_psycho = m[0][4]
+        print(user_psycho)
         for i in m:
             if Face.verify(i[2], nom):
                 user_psycho = i[4]
@@ -154,4 +161,4 @@ def result_goods():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(port=5005, debug=True)
